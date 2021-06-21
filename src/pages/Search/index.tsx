@@ -1,10 +1,10 @@
 import React from 'react'
-import {View, Text} from 'react-native'
+import { SafeAreaView, Text, StyleSheet } from 'react-native'
 
-export function Search(){
-    return(
-        <View>
+export function Search() {
+    return (
+        <SafeAreaView>
             <Text>Search</Text>
-        </View>
+        </SafeAreaView>
     )
 }
