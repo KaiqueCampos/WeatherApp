@@ -2,8 +2,43 @@ import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { Feather, MaterialCommunityIcons } from '@expo/vector-icons'
 
+type Forecast = {
+    condition: string,
+    date: string,
+    description: string,
+    max: number,
+    min: number,
+    weekday: string,
+}
 
-export function Conditions() {
+type WeatherProps = {
+    cid: string,
+    city: string,
+    city_name: string,
+    condition_code: number,
+    condition_slug: string,
+    currently: string,
+    date: string,
+    description: string,
+    forecast: Forecast[],
+    humidity: number,
+    img_id: number,
+    sunrise: string,
+    sunset: string,
+    temp: number,
+    time: string,
+    wind_speedy: string,
+}
+
+type ConditionsProps = {
+    weather : WeatherProps
+}
+
+
+export function Conditions(props: ConditionsProps) {
+
+    console.log(props?.weather?.wind_speedy)
+
     return (
         <View style={styles.container}>
             <View style={styles.conditions}>
@@ -12,7 +47,7 @@ export function Conditions() {
                     size={23}
                     color='#1ed6ff'
                 />
-                <Text>7 km/h</Text>
+                <Text>{props?.weather?.wind_speedy}</Text>
             </View>
 
             <View style={styles.conditions}>
@@ -21,7 +56,7 @@ export function Conditions() {
                     size={23}
                     color='#1ed6ff'
                 />
-                <Text>7:00 AM</Text>
+                <Text>{props?.weather?.sunrise}</Text>
             </View>
 
             <View style={styles.conditions}>
@@ -30,7 +65,7 @@ export function Conditions() {
                     size={23}
                     color='#1ed6ff'
                 />
-                <Text>7:00 PM</Text>
+                <Text>{props?.weather?.sunset}</Text>
             </View>
 
             <View style={styles.conditions}>
@@ -39,7 +74,7 @@ export function Conditions() {
                     size={23}
                     color='#1ed6ff'
                 />
-                <Text>65</Text>
+                <Text>{props?.weather?.humidity}</Text>
             </View>
         </View>
     )
