@@ -24,7 +24,7 @@ export function Menu() {
 const styles = StyleSheet.create({
     container: {
         position: 'absolute',
-        left:10,
+        left:20,
         top:40,
         zIndex: 9,
 
