@@ -1,5 +1,5 @@
 import axios from 'axios'
-export const key = '398ed578'
+export const key = 'KEY_VALUE'
 
 const api = axios.create({
     baseURL: 'http://api.hgbrasil.com'

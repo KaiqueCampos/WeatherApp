@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { FlatList, SafeAreaView, StyleSheet } from 'react-native'
+import { FlatList, SafeAreaView, StyleSheet, View, Text } from 'react-native'
 import * as Location from 'expo-location'
 
 import { ClimateInformation } from '../../components/ClimateInformation/climateInformation'
@@ -8,90 +8,6 @@ import { ForecastItems } from '../../components/ForecastItems/forecastItems'
 import { Menu } from '../../components/Menu/menu'
 import api, { key } from '../../services/api'
 import { climateConditions } from '../../utils/climateConditions'
-
-const list = [
-    {
-        "date": "22/06",
-        "weekday": "Ter",
-        "max": 20,
-        "min": 14,
-        "description": "Chuvas esparsas",
-        "condition": "rain"
-    },
-    {
-        "date": "23/06",
-        "weekday": "Qua",
-        "max": 20,
-        "min": 13,
-        "description": "Parcialmente nublado",
-        "condition": "clear_day"
-    },
-    {
-        "date": "24/06",
-        "weekday": "Qui",
-        "max": 25,
-        "min": 12,
-        "description": "Tempo nublado",
-        "condition": "cloudly_day"
-    },
-    {
-        "date": "25/06",
-        "weekday": "Sex",
-        "max": 27,
-        "min": 17,
-        "description": "Tempo nublado",
-        "condition": "clear_day"
-    },
-    {
-        "date": "26/06",
-        "weekday": "Sáb",
-        "max": 28,
-        "min": 16,
-        "description": "Parcialmente nublado",
-        "condition": "cloud"
-    },
-    {
-        "date": "27/06",
-        "weekday": "Dom",
-        "max": 27,
-        "min": 17,
-        "description": "Tempo nublado",
-        "condition": "cloudly_day"
-    },
-    {
-        "date": "28/06",
-        "weekday": "Seg",
-        "max": 22,
-        "min": 15,
-        "description": "Tempo nublado",
-        "condition": "cloudly_day"
-    },
-    {
-        "date": "29/06",
-        "weekday": "Ter",
-        "max": 21,
-        "min": 15,
-        "description": "Chuvas esparsas",
-        "condition": "rain"
-    },
-    {
-        "date": "30/06",
-        "weekday": "Qua",
-        "max": 19,
-        "min": 16,
-        "description": "Chuvas esparsas",
-        "condition": "storm"
-    },
-    {
-        "date": "01/07",
-        "weekday": "Qui",
-        "max": 19,
-        "min": 15,
-        "description": "Chuvas esparsas",
-        "condition": "rain"
-    }
-]
-
 
 type Forecast = {
     condition: string,
@@ -179,7 +95,16 @@ export function Home() {
 
     }, [])
 
-    console.log(weather?.wind_speedy)
+    if(loading){
+        return(
+            <View style={styles.container}>
+                <Text style={{
+                    fontSize: 17,
+                    fontStyle: 'italic'
+                }}>Carregando dados...</Text>
+            </View>
+        )
+    }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -197,7 +122,7 @@ export function Home() {
                 horizontal={true}
                 contentContainerStyle={{ paddingBottom: '5%' }}
                 style={styles.list}
-                data={list}
+                data={weather?.forecast}
                 keyExtractor={item => item.date}
                 renderItem={({ item }) => <ForecastItems data={item} />}
             />

@@ -37,8 +37,6 @@ type ConditionsProps = {
 
 export function Conditions(props: ConditionsProps) {
 
-    console.log(props?.weather?.wind_speedy)
-
     return (
         <View style={styles.container}>
             <View style={styles.conditions}>
