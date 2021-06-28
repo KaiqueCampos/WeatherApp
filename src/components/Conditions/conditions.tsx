@@ -31,8 +31,8 @@ type WeatherProps = {
 }
 
 type ConditionsProps = {
-    weather : WeatherProps
-}
+    weather: WeatherProps | undefined,
+} 
 
 
 export function Conditions(props: ConditionsProps) {
@@ -43,36 +43,36 @@ export function Conditions(props: ConditionsProps) {
                 <Feather
                     name='wind'
                     size={23}
-                    color='#1ed6ff'
+                    color='#fff'
                 />
-                <Text>{props?.weather?.wind_speedy}</Text>
+                <Text style={styles.informationFont}>{props?.weather?.wind_speedy}</Text>
             </View>
 
             <View style={styles.conditions}>
                 <MaterialCommunityIcons
                     name='weather-sunset-up'
                     size={23}
-                    color='#1ed6ff'
+                    color='#fff'
                 />
-                <Text>{props?.weather?.sunrise}</Text>
+                <Text style={styles.informationFont}>{props?.weather?.sunrise}</Text>
             </View>
 
             <View style={styles.conditions}>
                 <MaterialCommunityIcons
                     name='weather-sunset-down'
                     size={23}
-                    color='#1ed6ff'
+                    color='#fff'
                 />
-                <Text>{props?.weather?.sunset}</Text>
+                <Text style={styles.informationFont}>{props?.weather?.sunset}</Text>
             </View>
 
             <View style={styles.conditions}>
                 <Feather
                     name='droplet'
                     size={23}
-                    color='#1ed6ff'
+                    color='#fff'
                 />
-                <Text>{props?.weather?.humidity}</Text>
+                <Text style={styles.informationFont}>{props?.weather?.humidity}</Text>
             </View>
         </View>
     )
@@ -81,9 +81,8 @@ export function Conditions(props: ConditionsProps) {
 const styles = StyleSheet.create({
     container: {
         marginTop: 15,
+        marginBottom: '5%',
         padding: 10,
-        backgroundColor: '#fff',
-
         flexDirection: 'row',
         width: '95%',
         justifyContent: 'space-around',
@@ -93,5 +92,10 @@ const styles = StyleSheet.create({
     conditions: {
         alignItems: 'center',
         justifyContent: 'center',
+    },
+
+    informationFont: {
+        color: '#fff',
+        marginTop: 10
     }
 })

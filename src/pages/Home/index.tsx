@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react'
-import { FlatList, SafeAreaView, StyleSheet, View, Text } from 'react-native'
 import * as Location from 'expo-location'
-
+import React, { useEffect, useState } from 'react'
+import { FlatList, ImageBackground, SafeAreaView, StyleSheet, Text, View } from 'react-native'
 import { ClimateInformation } from '../../components/ClimateInformation/climateInformation'
 import { Conditions } from '../../components/Conditions/conditions'
 import { ForecastItems } from '../../components/ForecastItems/forecastItems'
 import { Menu } from '../../components/Menu/menu'
 import api, { key } from '../../services/api'
-import { climateConditions } from '../../utils/climateConditions'
+
 
 type Forecast = {
     condition: string,
@@ -35,7 +34,7 @@ type WeatherProps = {
     temp: number,
     time: string,
     wind_speedy: string,
-}
+} 
 
 export function Home() {
     const [weather, setWeather] = useState<WeatherProps>()
@@ -43,6 +42,8 @@ export function Home() {
     const [loading, setLoading] = useState(true)
     const [backgroundTime, setbackgroundTime] = useState("['#1ed6ff','#97c1ff']")
     const [weatherIcon, setWeatherIcon] = useState({ name: 'cloud', color: '#fff' })
+    const [dayOrNight, setDayOrNight] = useState('')
+
 
     useEffect(() => {
 
@@ -66,6 +67,9 @@ export function Home() {
 
             // Day or Night
             setbackgroundTime(response.data.results.currently)
+
+            // Condition day or night
+            setDayOrNight(response.data.results.currently)
 
             // Condition Icon
             switch (response.data.results.condition_slug) {
@@ -95,8 +99,8 @@ export function Home() {
 
     }, [])
 
-    if(loading){
-        return(
+    if (loading) {
+        return (
             <View style={styles.container}>
                 <Text style={{
                     fontSize: 17,
@@ -107,25 +111,37 @@ export function Home() {
     }
 
     return (
-        <SafeAreaView style={styles.container}>
-            <Menu />
+        <SafeAreaView>
+            <ImageBackground
+                source={
+                    dayOrNight === 'dia'
+                        ? require('../../../assets/sunny.jpg')
+                        : require('../../../assets/night.jpg')
+                }
+                resizeMode='cover'
+                style={styles.container}
+            >
+                <Menu />
 
-            <ClimateInformation
-                background={backgroundTime}
-                icon={weatherIcon}
-                weather={weather}
-            />
+                <ClimateInformation
+                    background={backgroundTime}
+                    icon={weatherIcon}
+                    weather={weather}
+                />
 
-            <Conditions weather={weather}/>
+                <FlatList
+                    horizontal={true}
+                    contentContainerStyle={{ paddingBottom: '5%' }}
+                    style={styles.list}
+                    data={weather?.forecast}
+                    keyExtractor={item => item.date}
+                    renderItem={({ item }) => <ForecastItems data={item} />}
+                />
 
-            <FlatList
-                horizontal={true}
-                contentContainerStyle={{ paddingBottom: '5%' }}
-                style={styles.list}
-                data={weather?.forecast}
-                keyExtractor={item => item.date}
-                renderItem={({ item }) => <ForecastItems data={item} />}
-            />
+                <Conditions weather={weather} />
+
+            </ImageBackground>
+
 
         </SafeAreaView>
     )
@@ -133,11 +149,10 @@ export function Home() {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        justifyContent: 'center',
+        width: '100%',
+        height: '100%',
         alignItems: 'center',
-        backgroundColor: '#e8f0ff',
-        paddingTop: '5%',
+        justifyContent: 'center',
     },
 
     list: {

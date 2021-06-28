@@ -8,7 +8,7 @@ import { Routes } from './src/route';
 export default function App() {
   return (
     <NavigationContainer>
-      <Routes />
+      <Routes/>
       <StatusBar hidden={true} />
     </NavigationContainer>
   );

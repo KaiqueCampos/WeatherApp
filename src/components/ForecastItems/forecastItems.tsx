@@ -15,7 +15,7 @@ type ForecastItemsProps = {
 }
 
 type ForecastItemsData = {
-    data: ForecastItemsProps
+    data: ForecastItemsProps 
 }
 
 export function ForecastItems({ data }: ForecastItemsData) {
@@ -33,10 +33,11 @@ export function ForecastItems({ data }: ForecastItemsData) {
             />
 
             <View style={styles.temperatureContainer}>
-                <Text>{data.min}°</Text>
+                <Text style={{color: '#fff'}}>{data.min}°</Text>
                 <Text style={{
                     fontSize: 18,
-                    fontWeight: 'bold'
+                    fontWeight: 'bold',
+                    color: '#fff'
                 }}>
                     {data.max}°
                 </Text>
@@ -48,7 +49,6 @@ export function ForecastItems({ data }: ForecastItemsData) {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#fff',
         marginLeft: 12,
         borderRadius: 8,
         paddingTop: 10,
@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
     },
 
     date: {
+        color: '#fff',
         fontSize: 14,
     },
 

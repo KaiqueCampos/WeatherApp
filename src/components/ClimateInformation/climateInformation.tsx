@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native'
-import { LinearGradient } from 'expo-linear-gradient';
 
 import { Ionicons } from '@expo/vector-icons'
+import { dateFormat } from '../../utils/dateFormat';
 
 type IconProps = {
     name: string,
@@ -21,54 +21,58 @@ type Forecast = {
 }
 
 type WeatherProps = {
-        cid: string,
-        city: string,
-        city_name: string,
-        condition_code: number,
-        condition_slug: string,
-        currently: string,
-        date: string,
-        description: string,
-        forecast: Forecast[],
-        humidity: number,
-        img_id: number,
-        sunrise: string,
-        sunset:string,
-        temp: number,
-        time: string,
-        wind_speedy: string,  
-}
-
+    cid: string,
+    city: string,
+    city_name: string,
+    condition_code: number,
+    condition_slug: string,
+    currently: string,
+    date: string,
+    description: string,
+    forecast: Forecast[],
+    humidity: number,
+    img_id: number,
+    sunrise: string,
+    sunset: string,
+    temp: number,
+    time: string,
+    wind_speedy: string,
+};
+ 
 type Props = {
-    background : BackgroundTimeProps,
-    icon : IconProps,
-    weather: WeatherProps
+    background: BackgroundTimeProps,
+    icon: IconProps,
+    weather: WeatherProps | undefined,
 }
 
-export function ClimateInformation(props : Props) {
+export function ClimateInformation(props: Props) {
+
+   const currentDateFormated = dateFormat(props?.weather?.date)
 
     return (
-        <LinearGradient
+        <View
             style={styles.container}
-            colors={props?.background === 'dia' ? ['#1ed6ff','#97c1ff'] : ['#063741','#0f2f61']}
         >
-            <Text style={styles.data}> {props?.weather?.date} </Text>
             <Text style={styles.city}> {props?.weather?.city} </Text>
+            <Text style={styles.data}> {currentDateFormated} </Text>
 
             <Ionicons
                 name={props?.icon?.name}
-                color={props?.icon?.color}
+                color='#fff'
                 size={150}
+                style={{marginTop: 5}}
             />
 
-            <Text style={styles.climate}>{props?.weather?.temp}°</Text>
+            <Text style={styles.climate}>{props?.weather?.temp}°c</Text>
 
-        </LinearGradient >
+            <Text style={styles.city}>--------------</Text>
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
+        marginTop: '25%',
         width: '95%',
         height: '55%',
         alignItems: 'center',
@@ -76,15 +80,15 @@ const styles = StyleSheet.create({
         borderRadius: 8,
     },
 
+    city: {
+        color: '#fff',
+        fontSize: 45,
+        fontWeight: 'bold',
+    },
+
     data: {
         color: '#fff',
         fontSize: 17,
-    },
-
-    city: {
-        color: '#fff',
-        fontSize: 20,
-        fontWeight: 'bold',
     },
 
     climate: {

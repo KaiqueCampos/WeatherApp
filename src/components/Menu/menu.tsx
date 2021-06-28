@@ -15,7 +15,7 @@ export function Menu() {
             <Feather
                 name='menu'
                 size={36}
-                color='#373737'
+                color='#fff'
             />
         </TouchableOpacity>
     )
@@ -25,26 +25,7 @@ const styles = StyleSheet.create({
     container: {
         position: 'absolute',
         left:20,
-        top:40,
+        top:20,
         zIndex: 9,
-
-        width: 70,
-        height: 70,
-        backgroundColor: '#fff',
-
-        alignItems: 'center',
-        justifyContent: 'center',
-
-        borderTopRightRadius: 30,
-        borderBottomRightRadius: 30,
-        borderBottomLeftRadius: 30,
-
-        elevation: 2,
-        shadowColor: '#000',
-        shadowOffset:{
-            width: 1,
-            height: 3
-        }
-
     }
 })

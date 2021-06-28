@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Keyboard, SafeAreaView, TextInput, Text, View, StyleSheet, TouchableOpacity } from 'react-native'
+import { ImageBackground, Keyboard, SafeAreaView, TextInput, Text, View, StyleSheet, TouchableOpacity } from 'react-native'
 
 import { Feather } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/core';
@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/core';
 import api, { key } from '../../services/api'
 import { LinearGradient } from 'expo-linear-gradient'
 import { Conditions } from '../../components/Conditions/conditions'
+import { dateFormat } from '../../utils/dateFormat';
 
 type Forecast = {
     condition: string,
@@ -44,8 +45,6 @@ export function Search() {
 
 
     async function handleSearch() {
-        //https://api.hgbrasil.com/weather?key=SUA-CHAVE&city_name=Campinas,SP
-
         const response = await api.get(`/weather?key=${key}&city_name=${searchValue}`)
 
         if (response.data.by === 'dafault') {
@@ -56,14 +55,92 @@ export function Search() {
         }
 
         setCity(response.data.results)
-        console.log(city)
         setSearchValue('')
         Keyboard.dismiss()
     }
 
+    const dateFormated = dateFormat(city?.date);
+
     if (city) {
         return (
-            <SafeAreaView style={styles.container}>
+            <SafeAreaView>
+                <ImageBackground
+                    source={
+                        city.currently === 'dia'
+                            ? require('../../../assets/sunny.jpg')
+                            : require('../../../assets/night.jpg')
+                    }
+                    resizeMode='cover'
+                    style={styles.container}
+                >
+                    <TouchableOpacity
+                        style={styles.backButton}
+                        onPress={() => navigation.navigate('Home')}
+                    >
+                        <Feather
+                            name="chevron-left"
+                            size={28}
+                            color="#fff"
+                        />
+
+                        <Text style={{ fontSize: 22, color: '#fff' }}>Voltar</Text>
+                    </TouchableOpacity>
+
+                    <View style={styles.searchBox}>
+                        <TextInput
+                            value={searchValue}
+                            onChangeText={(value) => setSearchValue(value)}
+                            placeholder="Nome do estado"
+                            style={styles.searchInput}
+                        />
+
+                        <TouchableOpacity
+                            style={styles.icon}
+                            onPress={handleSearch}
+                        >
+                            <Feather
+                                name="search"
+                                size={22}
+                                color='#fff'
+                            />
+                        </TouchableOpacity>
+                    </View>
+
+                    <View
+                        style={styles.header}
+                    >
+                        <Text style={styles.cityName}>{city.city}</Text>
+                        <Text style={styles.date}>{dateFormated}</Text>
+                        <View>
+                            <Text style={styles.temp}>{city.temp}°</Text>
+                        </View>
+
+                        <View>
+
+                        </View>
+
+
+                    </View>
+
+                    <View style={{ position: 'absolute', bottom: '2%' }}>
+                        <Conditions
+                            weather={city}
+                        />
+                    </View>
+
+                </ImageBackground>
+            </SafeAreaView>
+        )
+    }
+
+    return (
+        <SafeAreaView>
+            <ImageBackground
+                 source={require('../../../assets/search.png')
+                }
+                resizeMode='cover'
+                style={styles.container}
+            >
                 <TouchableOpacity
                     style={styles.backButton}
                     onPress={() => navigation.navigate('Home')}
@@ -71,10 +148,10 @@ export function Search() {
                     <Feather
                         name="chevron-left"
                         size={28}
-                        color="#000"
+                        color="#fff"
                     />
 
-                    <Text style={{ fontSize: 22 }}>Voltar</Text>
+                    <Text style={{ fontSize: 22, color: '#fff' }}>Voltar</Text>
                 </TouchableOpacity>
 
                 <View style={styles.searchBox}>
@@ -96,74 +173,20 @@ export function Search() {
                         />
                     </TouchableOpacity>
                 </View>
-
-                <LinearGradient
-                    style={styles.header}
-                    colors={['#1ed6ff', '#97c1ff']}
-                >
-                    <Text style={styles.date}>{city.date}</Text>
-                    <Text style={styles.cityName}>{city.date}</Text>
-                    <View>
-                        <Text style={styles.temp}>{city.temp}°</Text>
-                    </View>
-
-                    <Conditions
-                        weather={city}
-                    />
-                </LinearGradient>
-
-            </SafeAreaView>
-        )
-    }
-
-    return (
-        <SafeAreaView style={styles.container}>
-            <TouchableOpacity
-                style={styles.backButton}
-                onPress={() => navigation.navigate('Home')}
-            >
-                <Feather
-                    name="chevron-left"
-                    size={28}
-                    color="#000"
-                />
-
-                <Text style={{ fontSize: 22 }}>Voltar</Text>
-            </TouchableOpacity>
-
-            <View style={styles.searchBox}>
-                <TextInput
-                    value={searchValue}
-                    onChangeText={(value) => setSearchValue(value)}
-                    placeholder="Nome do estado"
-                    style={styles.searchInput}
-                />
-
-                <TouchableOpacity
-                    style={styles.icon}
-                    onPress={handleSearch}
-                >
-                    <Feather
-                        name="search"
-                        size={22}
-                        color='#fff'
-                    />
-                </TouchableOpacity>
-            </View>
-
+            </ImageBackground>
         </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        width: '100%',
+        height: '100%',
         alignItems: 'center',
-        paddingTop: '10%',
-        backgroundColor: '#e8f0ff',
     },
 
     backButton: {
+        marginTop: '10%',
         flexDirection: 'row',
         marginLeft: 15,
         alignSelf: 'flex-start',
@@ -174,10 +197,11 @@ const styles = StyleSheet.create({
     searchBox: {
         alignItems: 'center',
         flexDirection: 'row',
-        backgroundColor: '#ddd',
         width: '90%',
         height: 50,
         borderRadius: 8,
+        borderWidth: 1,
+        borderColor: "#fff",
     },
 
     searchInput: {
@@ -193,7 +217,6 @@ const styles = StyleSheet.create({
 
     icon: {
         width: '15%',
-        backgroundColor: '#1ed6ff',
         alignItems: 'center',
         justifyContent: 'center',
         height: '100%',
@@ -202,7 +225,7 @@ const styles = StyleSheet.create({
     },
 
     header: {
-        marginTop: '5%',
+        marginTop: '40%',
         width: '90%',
         paddingTop: '5%',
         paddingBottom: '5%',
@@ -217,13 +240,13 @@ const styles = StyleSheet.create({
     },
 
     cityName: {
-        fontSize: 20,
+        color: '#fff',
+        fontSize: 45,
         fontWeight: 'bold',
-        color: '#fff'
     },
     temp: {
-         color: '#fff',
-         fontSize: 90,
-         fontWeight: 'bold'
+        color: '#fff',
+        fontSize: 90,
+        fontWeight: 'bold'
     }
 })
