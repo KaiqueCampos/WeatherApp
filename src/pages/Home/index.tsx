@@ -34,7 +34,7 @@ type WeatherProps = {
     temp: number,
     time: string,
     wind_speedy: string,
-} 
+}
 
 export function Home() {
     const [weather, setWeather] = useState<WeatherProps>()
@@ -101,12 +101,20 @@ export function Home() {
 
     if (loading) {
         return (
-            <View style={styles.container}>
-                <Text style={{
-                    fontSize: 17,
-                    fontStyle: 'italic'
-                }}>Carregando dados...</Text>
-            </View>
+            <ImageBackground
+                source={require('../../../assets/search.png')}
+                resizeMode='cover'
+                style={styles.container}
+            >
+                <View style={styles.container}>
+                    <Text style={{
+                        fontSize: 17,
+                        fontStyle: 'italic',
+                        color: '#fff'
+                    }}>Carregando dados...</Text>
+                </View>
+            </ImageBackground>
+
         )
     }
 
