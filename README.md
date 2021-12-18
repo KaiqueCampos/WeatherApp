@@ -36,7 +36,7 @@ $ cd WeatherApp
 
 # install dependencies
 
-$ yarn add
+$ yarn install
 # or
 $ npm install
 
